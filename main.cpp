@@ -74,7 +74,7 @@ void Setup(void)
 	NVIC_SetPriority(T32_INT1_IRQn,1);
 	NVIC_EnableIRQ(T32_INT1_IRQn);
 
-	ConfiAccel();
+	ConfigAccel();
 	ConfigADC();
 
 	__enable_irq();
