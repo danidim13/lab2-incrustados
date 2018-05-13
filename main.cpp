@@ -3,6 +3,7 @@
 #include "Scheduler.hpp"
 #include "Task.hpp"
 #include "LED.hpp"
+#include "configuracion.hpp"
 
 // ##########################
 // Global/Static declarations
@@ -72,6 +73,10 @@ void Setup(void)
 	TIMER32_1->CONTROL = TIMER32_CONTROL_SIZE | TIMER32_CONTROL_PRESCALE_0 | TIMER32_CONTROL_MODE | TIMER32_CONTROL_IE | TIMER32_CONTROL_ENABLE;
 	NVIC_SetPriority(T32_INT1_IRQn,1);
 	NVIC_EnableIRQ(T32_INT1_IRQn);
+
+	ConfiAccel();
+	ConfigADC();
+
 	__enable_irq();
 
 	return;
