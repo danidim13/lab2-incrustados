@@ -23,6 +23,7 @@ void ConfigADC()
      *                 A13 (P4.0) y
      *                 A11 (P4.2) z
      */
+
     ADC14->MCTL[0] = ADC14_MCTLN_INCH_14 | ADC14_MCTLN_VRSEL_0;
     ADC14->MCTL[1] = ADC14_MCTLN_INCH_13 | ADC14_MCTLN_VRSEL_0;
     ADC14->MCTL[2] = ADC14_MCTLN_INCH_11 | ADC14_MCTLN_VRSEL_0

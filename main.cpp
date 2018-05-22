@@ -3,7 +3,9 @@
 #include "Scheduler.hpp"
 #include "Task.hpp"
 #include "LED.hpp"
+#include "Display.hpp"
 #include "configuracion.hpp"
+
 
 // ##########################
 // Global/Static declarations
@@ -22,13 +24,18 @@ void main(void)
     // - Instantiate two new Tasks
     LED BlueLED(BIT2);
     LED GreenLED(BIT1);
+    Display Pantalla(BIT1); // valor provisional
+
     // - Run the overall setup function for the system
     Setup();
     // - Attach the Tasks to the Scheduler;
     g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,500);
-    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveFalse,600);
+    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,550);
+    g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveTrue,600);
+
     // - Run the Setup for the scheduler and all tasks
     g_MainScheduler.setup();
+
     // - Main Loop
     while(1)
     {
