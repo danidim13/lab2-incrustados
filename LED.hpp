@@ -21,6 +21,13 @@ class LED : public Task
         virtual uint8_t setup(void);
     protected:
     private:
+        uint8_t m_u8Bro;
+        bool ProcessMessages();
+
+        enum MsgType{
+            setBro,
+            unsetBro
+        };
 };
 
 #endif /* LED_HPP_ */
