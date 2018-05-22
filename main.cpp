@@ -26,7 +26,7 @@ void main(void)
     Setup();
     // - Attach the Tasks to the Scheduler;
     g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,500);
-    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,600);
+    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveFalse,600);
     // - Run the Setup for the scheduler and all tasks
     g_MainScheduler.setup();
     // - Main Loop
@@ -91,5 +91,21 @@ extern "C"
 		P1->OUT ^= BIT0; // - Toggle the heart beat indicator (1ms)
 		g_SystemTicks++;
 		return;
+	}
+
+	void ADC14_IRQHandler(void)
+	{
+	    __disable_irq();
+
+        ADC14->CLRIFGR0 = ADC14_CLRIFGR0_CLRIFG2;
+
+	    uint16_t x, y, z;
+        x = ADC14->MEM[0];
+        y = ADC14->MEM[1];
+        z = ADC14->MEM[2];
+
+        g_MainScheduler.ADCHandler(x, y, z);
+
+	    __enable_irq();
 	}
 }

@@ -121,3 +121,8 @@ uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
 {
     return(NO_ERR);
 }
+
+void Scheduler::ADCHandler(int x, int y, int z)
+{
+    return;
+}

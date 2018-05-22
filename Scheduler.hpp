@@ -48,6 +48,8 @@ public:
     uint8_t attach(Task * i_pTask, TaskType i_enType, TaskActive i_enTaskActive, uint64_t i_u64TickInterval = 0U);
     uint8_t run(void);
     uint8_t setup(void);
+
+    void ADCHandler(int x, int y, int z);
 private:
     uint8_t m_u8OpenSlots; // - Available slots
     uint8_t m_u8NextSlot;  // - Next available slot
