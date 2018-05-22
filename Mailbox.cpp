@@ -24,17 +24,25 @@ extern "C"
     st_Message Mailbox::getMessage(uint8_t i_u8MailboxID)
     {
         st_Message l_stMessage;
+        l_stMessage.bMessageValid = false;
 
-        l_stMessage = m_stMessageQueue[i_u8MailboxID];
+        if (m_stMessageQueue[i_u8MailboxID].num_elem() > 0) {
+            l_stMessage = m_stMessageQueue[i_u8MailboxID].pop_front();
+        }
 
         return(l_stMessage);
     }
 
     bool Mailbox::sendMessage(st_Message i_stMessage)
     {
+        /*
         if(m_stMessageQueue[i_stMessage.u8DestinationID].bMessageValid == false)
         {
             m_stMessageQueue[i_stMessage.u8DestinationID] = i_stMessage;
+            return(true);
+        }*/
+        if (m_stMessageQueue[i_stMessage.u8DestinationID].full() == false){
+            m_stMessageQueue[i_stMessage.u8DestinationID].push_back(i_stMessage);
             return(true);
         }
         else

@@ -8,7 +8,9 @@
 #ifndef MAILBOX_HPP_
 #define MAILBOX_HPP_
 #include "msp.h"
+#include "CircularBuffer.hpp"
 #define MAX_MESSAGE_QUEUE 50
+#define MAX_MESSAGE_PER_TASK 3
 
 struct st_Message
 {
@@ -30,7 +32,7 @@ public:
 private:
     Mailbox(){};
     static Mailbox* MailObj;
-    st_Message m_stMessageQueue[MAX_MESSAGE_QUEUE];
+    CircularBuffer<st_Message, MAX_MESSAGE_PER_TASK> m_stMessageQueue[MAX_MESSAGE_QUEUE];
 };
 
 #endif /* MAILBOX_HPP_ */
