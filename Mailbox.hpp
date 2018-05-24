@@ -9,8 +9,10 @@
 #define MAILBOX_HPP_
 #include "msp.h"
 #include "CircularBuffer.hpp"
+#include "SchedCalls.hpp"
 #define MAX_MESSAGE_QUEUE 50
 #define MAX_MESSAGE_PER_TASK 3
+#define SCHED_ID 0
 
 struct st_Message
 {

@@ -122,6 +122,116 @@ uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
     return(NO_ERR);
 }
 
+void Scheduler::ProcessMessages()
+{
+    st_Message l_stMessage;
+    l_stMessage = m_pMailbox->getMessage(SCHED_ID);
+    while (l_stMessage.bMessageValid) {
+        switch (l_stMessage.u8MessageCode) {
+        case setTaskActive:
+            SetTaskActive(l_stMessage.u8SourceID, l_stMessage.u32MessageData != 0);
+            break;
+        case setTaskOneShot:
+            SetTaskOneShot(l_stMessage.u8SourceID, 0);
+            break;
+        case setTaskPeriodic:
+            SetTaskPeriodic(l_stMessage.u8SourceID, (uint64_t)l_stMessage.u32MessageData);
+            break;
+        default:
+            break;
+        }
+        l_stMessage = m_pMailbox->getMessage(SCHED_ID);
+    }
+}
+
+bool Scheduler::SetTaskOneShot(uint8_t i_u8TaskID, uint64_t i_u64TickInterval)
+{
+    uint8_t l_u8Slot = 0;
+    Task * l_pTask = (uintptr_t) 0;
+
+    while (l_u8Slot < NUMBER_OF_SLOTS) {
+
+        l_pTask = static_cast<Task *> (m_aSchedule[l_u8Slot].pTask);
+
+        if ( l_pTask == (uintptr_t) 0) {
+            // No se encontró el TaskID
+            return false;
+        } else {
+            if (l_pTask->m_u8TaskID == i_u8TaskID) {
+                break;
+            } else {
+                l_u8Slot++;
+            }
+        }
+    }
+
+    m_aSchedule[l_u8Slot].bTaskIsActive = TaskActiveTrue;
+    m_aSchedule[l_u8Slot].u64ticks = this->m_u64ticks;
+    m_aSchedule[l_u8Slot].u64TickInterval = 0;
+    m_aSchedule[l_u8Slot].u64TickIntervalInitValue = i_u64TickInterval;
+    m_aSchedule[l_u8Slot].enTaskType = TaskType_OneShot;
+    return true;
+}
+
+bool Scheduler::SetTaskPeriodic(uint8_t i_u8TaskID, uint64_t i_u64TickInterval)
+{
+    uint8_t l_u8Slot = 0;
+    Task * l_pTask = (uintptr_t) 0;
+
+    while (l_u8Slot < NUMBER_OF_SLOTS) {
+
+        l_pTask = static_cast<Task *> (m_aSchedule[l_u8Slot].pTask);
+
+        if ( l_pTask == (uintptr_t) 0) {
+            // No se encontró el TaskID
+            return false;
+        } else {
+            if (l_pTask->m_u8TaskID == i_u8TaskID) {
+                break;
+            } else {
+                l_u8Slot++;
+            }
+        }
+    }
+
+    m_aSchedule[l_u8Slot].bTaskIsActive = TaskActiveTrue;
+    if (m_aSchedule[l_u8Slot].u64TickInterval > i_u64TickInterval) {
+        // Solo se ejecuta inmediatamente si el tiempo que llevaba esperando
+        // es mayor al nuevo periodo.
+        m_aSchedule[l_u8Slot].u64TickInterval = 0;
+    }
+    m_aSchedule[l_u8Slot].u64TickIntervalInitValue = i_u64TickInterval;
+
+    m_aSchedule[l_u8Slot].enTaskType = TaskType_Periodic;
+    return true;
+}
+
+bool Scheduler::SetTaskActive(uint8_t i_u8TaskID, bool i_bActive)
+{
+    uint8_t l_u8Slot = 0;
+    Task * l_pTask = (uintptr_t) 0;
+
+    while (l_u8Slot < NUMBER_OF_SLOTS) {
+
+        l_pTask = static_cast<Task *> (m_aSchedule[l_u8Slot].pTask);
+
+        if ( l_pTask == (uintptr_t) 0) {
+            // No se encontró el TaskID
+            return false;
+        } else {
+            if (l_pTask->m_u8TaskID == i_u8TaskID) {
+                break;
+            } else {
+                l_u8Slot++;
+            }
+        }
+    }
+
+    m_aSchedule[l_u8Slot].bTaskIsActive = i_bActive ? TaskActiveTrue : TaskActiveFalse;
+
+    return true;
+}
+
 void Scheduler::ADCHandler(int x, int y, int z)
 {
     return;

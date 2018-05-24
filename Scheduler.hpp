@@ -60,6 +60,13 @@ private:
     uint8_t SortScheduleByPriority(Task * i_pSchedule); // - Sorts a schedule based on priority (not implemented)
     uintptr_t m_pNextSchedule; // - Pointer to the next schedule.
     Mailbox* m_pMailbox;
+
+    void ProcessMessages();
+
+    bool SetTaskOneShot(uint8_t i_u8TaskID, uint64_t i_u64TickInterval);
+    bool SetTaskPeriodic(uint8_t i_u8TaskID, uint64_t i_u64TickInterval);
+    bool SetTaskActive(uint8_t i_u8TaskID, bool i_bActive);
+
 };
 
 
