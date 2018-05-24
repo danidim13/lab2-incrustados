@@ -2,6 +2,10 @@
 
 Task::Task()
 {
+    // Saltarse el ID del scheduler
+    if (m_u8NextTaskID == SCHED_ID) {
+        m_u8NextTaskID++;
+    }
     m_u8TaskID = m_u8NextTaskID;
     m_u8NextTaskID++;
     m_bIsFinished = false;
