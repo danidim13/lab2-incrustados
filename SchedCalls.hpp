@@ -43,7 +43,7 @@ enum StdCall {
      *
      * Argumentos
      *      u8SourceID : ID del task
-     *      u32MessageData : NA
+     *      u32MessageData : Delay? no implementado
      */
     setTaskOneShot,
 
