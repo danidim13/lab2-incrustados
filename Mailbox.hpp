@@ -32,9 +32,14 @@ public:
     st_Message getMessage(uint8_t i_u8MailboxID);
 
 private:
-    Mailbox(){};
+    Mailbox(){
+        for (int i = 0; i < MAX_MESSAGE_QUEUE; i++) {
+            m_stMessageQueue[i].bMessageValid = false;
+        }
+    };
     static Mailbox* MailObj;
-    CircularBuffer<st_Message, MAX_MESSAGE_PER_TASK> m_stMessageQueue[MAX_MESSAGE_QUEUE];
+    st_Message m_stMessageQueue[MAX_MESSAGE_QUEUE];
+    //CircularBuffer<st_Message, MAX_MESSAGE_PER_TASK> m_stMessageQueue[MAX_MESSAGE_QUEUE];
 };
 
 #endif /* MAILBOX_HPP_ */
