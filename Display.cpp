@@ -5,19 +5,9 @@
  *      Author: joror
  */
 
-extern "C"
-{
-#include "driverlib.h"
-#include "grlib.h"
-#include "Crystalfontz128x128_ST7735.h"
-}
-
 #include "Display.hpp"
 
 
-Graphics_Context g_sContext; // - Graphics Context
-Graphics_Rectangle Rect1 = {0, 64, 128, 0}; // - Rectangle 1 dimensions
-Graphics_Rectangle Rect2 = {0, 128, 128, 64}; // - Rectangle 2 dimensions
 
 Display::Display(uint16_t i_Posit)
 {
@@ -28,13 +18,15 @@ Display::Display(uint16_t i_Posit)
 uint8_t Display::run()
 {
 
+    Graphics_Rectangle Rect1 = {0, 0, 128, 64}; // - Rectangle 1 dimensions
+    Graphics_Rectangle Rect2 = {0, 64, 128, 128}; // - Rectangle 2 dimensions
+
+    Graphics_setForegroundColor(&m_stContext, GRAPHICS_COLOR_ROYAL_BLUE);
+    Graphics_fillRectangle(&m_stContext, &Rect1);
+
     // Test code to draw a rectangles
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_BROWN);
-    Graphics_fillRectangle(&g_sContext, &Rect1);
-
-    Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_SKY_BLUE);
-    Graphics_fillRectangle(&g_sContext, &Rect2);
-
+    Graphics_setForegroundColor(&m_stContext, GRAPHICS_COLOR_SIENNA);
+    Graphics_fillRectangle(&m_stContext, &Rect2);
     return(NO_ERR);
 }
 
@@ -44,6 +36,7 @@ uint8_t Display::setup()
     //       DISPLAY CONFIG
     // ****************************
 
+
     // - Initializes display
     Crystalfontz128x128_Init();
 
@@ -51,10 +44,14 @@ uint8_t Display::setup()
     Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_UP);
 
     // - Initializes graphics context
-    Graphics_initContext(&g_sContext, &g_sCrystalfontz128x128);
+    Graphics_initContext(&m_stContext, &g_sCrystalfontz128x128);
+    Graphics_setBackgroundColor(&m_stContext, GRAPHICS_COLOR_WHITE);
+    Graphics_setForegroundColor(&m_stContext, GRAPHICS_COLOR_BLACK);
 
     // - Clears Display
-    Graphics_clearDisplay(&g_sContext);
+    Graphics_clearDisplay(&m_stContext);
+
+
 
     return(NO_ERR);
 }
