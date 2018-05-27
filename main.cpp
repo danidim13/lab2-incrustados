@@ -24,14 +24,15 @@ void main(void)
     // - Instantiate two new Tasks
     LED BlueLED(BIT2);
     LED GreenLED(BIT1);
+    BlueLED.m_u8Bro = GreenLED.m_u8TaskID;
     Display Pantalla(BIT1); // valor provisional
 
     // - Run the overall setup function for the system
     Setup();
     // - Attach the Tasks to the Scheduler;
-    g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,500);
-    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,550);
-    g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveTrue,600);
+    g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,1000);
+    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,750);
+    //g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveTrue,600);
 
     // - Run the Setup for the scheduler and all tasks
     g_MainScheduler.setup();
@@ -104,12 +105,13 @@ extern "C"
 	{
 	    __disable_irq();
 
-        ADC14->CLRIFGR0 = ADC14_CLRIFGR0_CLRIFG2;
+        ADC14->CLRIFGR0 = ADC14_CLRIFGR0_CLRIFG2 | ADC14_CLRIFGR0_CLRIFG1 | ADC14_CLRIFGR0_CLRIFG0;
 
-	    uint16_t x, y, z;
-        x = ADC14->MEM[0];
-        y = ADC14->MEM[1];
-        z = ADC14->MEM[2];
+        int16_t setpoint = 8192;
+	    int16_t x, y, z;
+        x = ADC14->MEM[0] - setpoint;
+        y = ADC14->MEM[1] - setpoint;
+        z = ADC14->MEM[2] - setpoint;
 
         g_MainScheduler.ADCHandler(x, y, z);
 

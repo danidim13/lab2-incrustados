@@ -13,8 +13,9 @@ void ConfigADC()
     ADC14->CTL0 = ADC14_CTL0_SSEL__MCLK | ADC14_CTL0_PDIV__32
                 | ADC14_CTL0_DIV__2 | ADC14_CTL0_SHT0__64
                 | ADC14_CTL0_SHS_0 | ADC14_CTL0_SHP
-                | ADC14_CTL0_CONSEQ_1
+                | ADC14_CTL0_CONSEQ_1 | ADC14_CTL0_MSC
                 | ADC14_CTL0_ON ;
+
 
     /**
      * Tension de referencia VRSel:

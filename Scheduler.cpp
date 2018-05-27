@@ -43,6 +43,7 @@ uint8_t Scheduler::attach(Task * i_pTask, TaskType i_enTaskType, TaskActive i_en
 // - Execute the current schedule
 uint8_t Scheduler::run(void)
 {
+    ProcessMessages();
     uint8_t l_u8NextSlot = 0U;
     Task * l_pNextTask = (uintptr_t) 0;
     uint8_t l_u8ReturnCode = NO_ERR;
@@ -109,6 +110,8 @@ uint8_t Scheduler::setup(void)
         l_iNextTaskSlot++;
     }
 
+    // Empezar conversión
+    ADC14->CTL0 = ADC14->CTL0 | ADC14_CTL0_SC;
 
     return l_u8ReturnCode;
 }
@@ -228,11 +231,21 @@ bool Scheduler::SetTaskActive(uint8_t i_u8TaskID, bool i_bActive)
     }
 
     m_aSchedule[l_u8Slot].bTaskIsActive = i_bActive ? TaskActiveTrue : TaskActiveFalse;
-
+    m_aSchedule[l_u8Slot].u64ticks = this->m_u64ticks;
+    m_aSchedule[l_u8Slot].u64TickInterval = 0;
     return true;
 }
 
-void Scheduler::ADCHandler(int x, int y, int z)
+void Scheduler::ADCHandler(int16_t i_i16X, int16_t i_i16Y, int16_t i_i16Z)
 {
+    st_Message l_stMensaje;
+    l_stMensaje.bMessageValid = true;
+    l_stMensaje.u8DestinationID = m_u8ADCTask;
+    l_stMensaje.u8MessageCode = 0;
+    ADCResult[0] = i_i16X;
+    ADCResult[1] = i_i16Y;
+    ADCResult[2] = i_i16Z;
+    l_stMensaje.pPayload = (uint8_t *) ADCResult;
+    m_pMailbox->sendMessage(l_stMensaje);
     return;
 }

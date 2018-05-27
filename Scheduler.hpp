@@ -49,7 +49,10 @@ public:
     uint8_t run(void);
     uint8_t setup(void);
 
-    void ADCHandler(int x, int y, int z);
+    uint8_t m_u8ADCTask;
+    int16_t ADCResult[3];
+
+    void ADCHandler(int16_t i_i16X, int16_t i_i16Y, int16_t i_i16Z);
 private:
     uint8_t m_u8OpenSlots; // - Available slots
     uint8_t m_u8NextSlot;  // - Next available slot
