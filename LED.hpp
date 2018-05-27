@@ -19,11 +19,12 @@ class LED : public Task
         uint16_t m_u16BITN;
         virtual uint8_t run(void);
         virtual uint8_t setup(void);
+
+        uint8_t m_u8Bro;
     protected:
     private:
-        uint8_t m_u8Bro;
         bool ProcessMessages();
-
+        int bro_cnt;
         enum MsgType{
             setBro,
             unsetBro
