@@ -23,8 +23,11 @@ private:
     int16_t m_i16LastY;
     float32_t m_fGravityVec[3];
     float32_t m_fTheta;
+    bool m_bFirstTime;
+
     bool GetGravityVec();
     bool SendHorizon(int16_t i_i16Horizon);
+    bool ActivateDisplay();
     float32_t getTheta();
 };
 

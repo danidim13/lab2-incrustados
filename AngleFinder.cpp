@@ -11,6 +11,7 @@
 AngleFinder::AngleFinder()
 {
     m_i16LastY = 128/2;
+    m_bFirstTime = true;
     // TODO Auto-generated constructor stub
 
 }
@@ -36,16 +37,29 @@ uint8_t AngleFinder::run()
         int16_t l_i16Height = (int16_t) (64*(1 + l_fSin));
         SendHorizon(l_i16Height);
 
+        // Activar la pantalla cuando se tenga la primera medición.
+        if (m_bFirstTime){
+            // Si el mensaje se manda con éxito
+            m_bFirstTime = !ActivateDisplay();
+        }
+
         this->m_i16LastY = 128/2;
 
         // Empezar conversión
         ADC14->CTL0 = ADC14->CTL0 | ADC14_CTL0_SC;
     }
     return NO_ERR;
-    // Empezar conversión
-    ADC14->CTL0 = ADC14->CTL0 | ADC14_CTL0_SC;
 }
-
+bool AngleFinder::ActivateDisplay()
+{
+    st_Message l_stMensaje;
+    l_stMensaje.bMessageValid = true;
+    l_stMensaje.u8SourceID = m_u8DrawTask;
+    l_stMensaje.u8DestinationID = SCHED_ID;
+    l_stMensaje.u32MessageData = 1;
+    l_stMensaje.u8MessageCode = setTaskActive;
+    return sendMessage(l_stMensaje);
+}
 bool AngleFinder::SendHorizon(int16_t i_i16Horizon)
 {
     st_Message l_stMensaje;

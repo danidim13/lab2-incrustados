@@ -38,7 +38,7 @@ void main(void)
     // - Attach the Tasks to the Scheduler;
     //g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,1000);
     //g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,750);
-    g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveTrue,100);
+    g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveFalse,100);
     g_MainScheduler.attach(&AngleTask, TaskType_Periodic, TaskActiveTrue, 105);
     g_MainScheduler.m_u8ADCTask = AngleTask.m_u8TaskID;
     // - Run the Setup for the scheduler and all tasks
