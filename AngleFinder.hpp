@@ -18,10 +18,13 @@ public:
     virtual ~AngleFinder();
     virtual  uint8_t run(void);
     virtual  uint8_t setup(void);
+    uint8_t m_u8DrawTask;
 private:
     int16_t m_i16LastY;
     float32_t m_fGravityVec[3];
+    float32_t m_fTheta;
     bool GetGravityVec();
+    bool SendHorizon(int16_t i_i16Horizon);
     float32_t getTheta();
 };
 

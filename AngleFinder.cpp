@@ -6,6 +6,7 @@
  */
 
 #include <AngleFinder.hpp>
+#include <math.h>
 
 AngleFinder::AngleFinder()
 {
@@ -23,12 +24,37 @@ uint8_t AngleFinder::run()
 {
 
     if (GetGravityVec()){
+
+        float32_t l_fGrav2, l_fGravNorm;
+        arm_dot_prod_f32(m_fGravityVec, m_fGravityVec, 3, &l_fGrav2);
+        arm_sqrt_f32(l_fGrav2, &l_fGravNorm);
+
+        float32_t l_fSin = m_fGravityVec[2]/l_fGravNorm;
+
+        m_fTheta = asinf(l_fSin);
+
+        int16_t l_i16Height = (int16_t) (64*(1 + l_fSin));
+        SendHorizon(l_i16Height);
+
         this->m_i16LastY = 128/2;
+
         // Empezar conversión
         ADC14->CTL0 = ADC14->CTL0 | ADC14_CTL0_SC;
     }
     return NO_ERR;
+    // Empezar conversión
+    ADC14->CTL0 = ADC14->CTL0 | ADC14_CTL0_SC;
+}
 
+bool AngleFinder::SendHorizon(int16_t i_i16Horizon)
+{
+    st_Message l_stMensaje;
+    l_stMensaje.bMessageValid = true;
+    l_stMensaje.u8SourceID = m_u8TaskID;
+    l_stMensaje.u8DestinationID = m_u8DrawTask;
+    l_stMensaje.u32MessageData = i_i16Horizon;
+    l_stMensaje.u8MessageCode = i16ScalarMessage;
+    return sendMessage(l_stMensaje);
 }
 
 bool AngleFinder::GetGravityVec()
