@@ -5,6 +5,7 @@
 #include "LED.hpp"
 #include "Display.hpp"
 #include "configuracion.hpp"
+#include "AngleFinder.hpp"
 
 
 // ##########################
@@ -26,6 +27,9 @@ void main(void)
     LED GreenLED(BIT1);
     BlueLED.m_u8Bro = GreenLED.m_u8TaskID;
     Display Pantalla(BIT1); // valor provisional
+    AngleFinder AngleTask;
+
+
 
     // - Run the overall setup function for the system
     Setup();
@@ -33,7 +37,8 @@ void main(void)
     g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,1000);
     g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,750);
     g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveTrue,100);
-
+    g_MainScheduler.attach(&AngleTask, TaskType_Periodic, TaskActiveTrue, 105);
+    g_MainScheduler.m_u8ADCTask = AngleTask.m_u8TaskID;
     // - Run the Setup for the scheduler and all tasks
     g_MainScheduler.setup();
 

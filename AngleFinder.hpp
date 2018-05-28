@@ -9,6 +9,7 @@
 #define ANGLEFINDER_HPP_
 
 #include "Task.hpp"
+#include "arm_math.h"
 
 class AngleFinder: public Task
 {
@@ -19,6 +20,9 @@ public:
     virtual  uint8_t setup(void);
 private:
     int16_t m_i16LastY;
+    float32_t m_fGravityVec[3];
+    bool GetGravityVec();
+    float32_t getTheta();
 };
 
 #endif /* ANGLEFINDER_HPP_ */
