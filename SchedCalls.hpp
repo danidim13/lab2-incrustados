@@ -54,7 +54,16 @@ enum StdCall {
      *      u8SourceID : ID del task
      *      u32MessageData : Periodo del task (LSB).
      */
-    setTaskPeriodic
+    setTaskPeriodic,
+
+    /**
+     * Envía un array de datos tipo int16_t
+     *
+     * Argumentos
+     *      u32MessageData : Tamaño del vector
+     *      pPayload : Primer elemento del vector.
+     */
+    i16VectorMessage
 };
 
 #endif /* SCHEDCALLS_HPP_ */

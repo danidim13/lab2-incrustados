@@ -241,7 +241,9 @@ void Scheduler::ADCHandler(int16_t i_i16X, int16_t i_i16Y, int16_t i_i16Z)
     st_Message l_stMensaje;
     l_stMensaje.bMessageValid = true;
     l_stMensaje.u8DestinationID = m_u8ADCTask;
-    l_stMensaje.u8MessageCode = 0;
+    l_stMensaje.u8SourceID = SCHED_ID;
+    l_stMensaje.u8MessageCode = i16VectorMessage;
+    l_stMensaje.u32MessageData = 3;
     ADCResult[0] = i_i16X;
     ADCResult[1] = i_i16Y;
     ADCResult[2] = i_i16Z;
