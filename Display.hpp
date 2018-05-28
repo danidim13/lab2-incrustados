@@ -30,6 +30,8 @@ class Display : public Task
     protected:
     private:
         Graphics_Context m_stContext;
+        int16_t m_i16HorizonHeight;
+        bool GetHorizon();
 };
 
 #endif /* DISPLAY_HPP_ */

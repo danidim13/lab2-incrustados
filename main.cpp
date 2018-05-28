@@ -23,19 +23,21 @@ Scheduler g_MainScheduler; // - Instantiate a Scheduler
 void main(void)
 {
     // - Instantiate two new Tasks
-    LED BlueLED(BIT2);
-    LED GreenLED(BIT1);
-    BlueLED.m_u8Bro = GreenLED.m_u8TaskID;
+    //LED BlueLED(BIT2);
+    //LED GreenLED(BIT1);
+    //BlueLED.m_u8Bro = GreenLED.m_u8TaskID;
+
     Display Pantalla(BIT1); // valor provisional
     AngleFinder AngleTask;
+    AngleTask.m_u8DrawTask = Pantalla.m_u8TaskID;
 
 
 
     // - Run the overall setup function for the system
     Setup();
     // - Attach the Tasks to the Scheduler;
-    g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,1000);
-    g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,750);
+    //g_MainScheduler.attach(&BlueLED,TaskType_Periodic, TaskActiveTrue,1000);
+    //g_MainScheduler.attach(&GreenLED, TaskType_Periodic,TaskActiveTrue,750);
     g_MainScheduler.attach(&Pantalla, TaskType_Periodic,TaskActiveTrue,100);
     g_MainScheduler.attach(&AngleTask, TaskType_Periodic, TaskActiveTrue, 105);
     g_MainScheduler.m_u8ADCTask = AngleTask.m_u8TaskID;
@@ -114,9 +116,9 @@ extern "C"
 
         int16_t setpoint = 8192;
 	    int16_t x, y, z;
-        x = ADC14->MEM[0] - setpoint;
-        y = ADC14->MEM[1] - setpoint;
-        z = ADC14->MEM[2] - setpoint;
+        x = setpoint - ADC14->MEM[0];
+        y = setpoint - ADC14->MEM[1];
+        z = setpoint - ADC14->MEM[2];
 
         g_MainScheduler.ADCHandler(x, y, z);
 
