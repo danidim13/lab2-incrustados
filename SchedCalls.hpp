@@ -63,7 +63,12 @@ enum StdCall {
      *      u32MessageData : Tamaño del vector
      *      pPayload : Primer elemento del vector.
      */
-    i16VectorMessage
+    i16VectorMessage,
+
+    /**
+     *
+     */
+    i16ScalarMessage
 };
 
 #endif /* SCHEDCALLS_HPP_ */
